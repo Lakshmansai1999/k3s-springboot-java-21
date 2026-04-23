@@ -1,10 +1,14 @@
-# Use Java 21 runtime
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-# Copy jar file
-COPY target/*.jar app.jar
+# Copy only pom first (cache dependencies)
+COPY pom.xml .
+RUN mvn -B -q -e -DskipTests dependency:go-offline
 
-# Run the app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Then copy source
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+CMD ["java", "-jar", "target/*.jar"]
