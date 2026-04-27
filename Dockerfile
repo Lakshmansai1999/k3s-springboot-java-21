@@ -1,14 +1,9 @@
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
-# Copy only pom first (cache dependencies)
-COPY pom.xml .
-RUN mvn -B -q -e -DskipTests dependency:go-offline
+COPY target/*.jar app.jar
 
-# Then copy source
-COPY src ./src
+EXPOSE 8080
 
-RUN mvn clean package -DskipTests
-
-CMD ["java", "-jar", "target/*.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
