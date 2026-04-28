@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-java-app
+  name: k3s-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: my-java-app
+      app: k3s-app
   template:
     metadata:
       labels:
-        app: my-java-app
+        app: k3s-app
     spec:
       containers:
-      - name: my-java-app
-        image: lakshmansai/my-java-app:1.0
+      - name: k3s-app
+        image: lakshmansai/k3s-app
         ports:
         - containerPort: 8080
